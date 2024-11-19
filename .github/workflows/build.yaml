@@ -38,6 +38,8 @@ jobs:
           context: .
           platforms: ${{ github.event.inputs.build_platforms || 'linux/amd64,linux/arm64' }}
           push: true
+          cache-from: type=registry,ref=ghcr.io/shaked/az-cli-proxy:cache-latest
+          cache-to: type=registry,ref=ghcr.io/shaked/az-cli-proxy:cache-latest,mode=max
           tags: |
             ghcr.io/shaked/az-cli-proxy:${{ github.sha }}
             ghcr.io/shaked/az-cli-proxy:latest

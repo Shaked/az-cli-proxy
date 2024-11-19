@@ -15,8 +15,6 @@ COPY src /src
 WORKDIR /src
 RUN mkdir -p /app/publish
 RUN go mod download
-ARG VERSION=1
-RUN ls -la /src
 RUN go build main.go
 
 FROM base AS azcliproxy-dist
