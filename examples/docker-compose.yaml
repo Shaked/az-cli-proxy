@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  azcliproxy:
+    image: shaked/az-cli-proxy:${VERSION:-latest}
+    volumes:
+      - ${HOME}/.azure:/app/.azure/
+
+  service:
+    build: .
+    depends_on:
+      - azcliproxy
+    environment:
+      - "IDENTITY_ENDPOINT=http://azcliproxy:8080/token"
+      - "IMDS_ENDPOINT=dummy_required_value"
+      - "YOUR_ENV_VAR=your_value"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
