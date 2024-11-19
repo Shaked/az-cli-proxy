@@ -38,4 +38,6 @@ jobs:
           context: .
           platforms: ${{ github.event.inputs.build_platforms || 'linux/amd64,linux/arm64' }}
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: |
+            ghcr.io/shaked/az-cli-proxy:${{ github.sha }}
+            ghcr.io/shaked/az-cli-proxy:latest
