@@ -27,6 +27,7 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("Getting token for resource: %s\n", resource)
 	// Create an Azure CLI Credential
 	cred, err := azidentity.NewAzureCLICredential(nil)
 	if err != nil {
@@ -56,7 +57,7 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to marshal response: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	log.Printf("Token fetched successfully\n")
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonResponse)
