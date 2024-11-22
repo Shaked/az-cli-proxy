@@ -23,6 +23,7 @@ func main() {
 func tokenHandler(w http.ResponseWriter, r *http.Request) {
 	resource := r.URL.Query().Get("resource")
 	if resource == "" {
+		log.Printf("Resource parameter is required\n")
 		http.Error(w, "Resource parameter is required", http.StatusBadRequest)
 		return
 	}
@@ -31,6 +32,7 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) {
 	// Create an Azure CLI Credential
 	cred, err := azidentity.NewAzureCLICredential(nil)
 	if err != nil {
+		log.Printf("Failed to create Azure CLI Credential: %s\n", err.Error())
 		http.Error(w, "Failed to create Azure CLI Credential: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -41,6 +43,7 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) {
 
 	token, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{resource}})
 	if err != nil {
+		log.Printf("Failed to get token: %s\n", err.Error())
 		http.Error(w, "Failed to get token: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -54,6 +57,7 @@ func tokenHandler(w http.ResponseWriter, r *http.Request) {
 
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
+		log.Printf("Failed to marshal response: %s\n", err.Error())
 		http.Error(w, "Failed to marshal response: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
